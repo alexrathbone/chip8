@@ -31,7 +31,7 @@ set clang_release=call clang %clang_common% -lmsvcrt -O2 ^
 -l%SDL2_PATH%/lib/SDL2main -l%SDL2_PATH%/lib/SDL2
 
 rem Link stage
-set cl_link=/link /subsystem:windows
+set cl_link=/link /subsystem:console
 set clang_link=-Xlinker /subsystem:windows -Xlinker /nodefaultlib:msvcrt ^
 -Xlinker /nodefaultlib:libcmt
 set cl_out=/out:
@@ -60,7 +60,7 @@ if not exist build mkdir build
 pushd build
 if not exist obj if "%msvc%"=="1" mkdir obj
 %compile% ^
-  ../src/main.c ^
+  ../src/main.c ../src/sdl.c ../src/chip8.c ^
   %compile_link% %out%chip8.exe || exit /b 1
 popd
 

@@ -52,7 +52,7 @@ if [ -v release ]; then compile=$compile_release; fi
 # Build program
 mkdir -p build
 cd build
-$compile ../src/main.c $compile_link $out chip8
+$compile ../src/main.c ../src/sdl.c ../src/chip8.c $compile_link $out chip8
 
 if [ $? -ne 0 ]; then
     echo Build failed!

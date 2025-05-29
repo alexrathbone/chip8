@@ -28,4 +28,4 @@ struct chip8_context {
 
 int chip8_init(struct chip8_context *ctx);
 void chip8_loadrom(struct chip8_context *ctx, const char *filepath);
-void chip8_update(struct chip8_context *ctx);
+void chip8_cycle(struct chip8_context *ctx);

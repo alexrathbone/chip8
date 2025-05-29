@@ -128,7 +128,7 @@ void chip8_loadrom(struct chip8_context *ctx, const char *filepath)
     }
 }
 
-void chip8_update(struct chip8_context *ctx)
+void chip8_cycle(struct chip8_context *ctx)
 {
     if (ctx->pc < PROGRAM_END) {
         ctx->opcode = (ctx->mem[ctx->pc] << 8u) | ctx->mem[ctx->pc + 1];
@@ -433,8 +433,6 @@ static void op_Dxyn(struct chip8_context *ctx)
             }
         }
     }
-
-    /* TODO drawing */
 }
 
 static void op_E_decode(struct chip8_context *ctx)
@@ -511,7 +509,9 @@ static void op_F_decode(struct chip8_context *ctx)
 
 static void op_Fx07(struct chip8_context *ctx)
 {
-    /* TODO timer */
+    /* LD Vx, DT */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+    ctx->registers[x] = ctx->delay_timer;
 }
 
 static void op_Fx0A(struct chip8_context *ctx)
@@ -521,12 +521,16 @@ static void op_Fx0A(struct chip8_context *ctx)
 
 static void op_Fx15(struct chip8_context *ctx)
 {
-    /* TODO timer */
+    /* LD DT, Vx */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+    ctx->delay_timer = ctx->registers[x];
 }
 
 static void op_Fx18(struct chip8_context *ctx)
 {
-    /* TODO timer */
+    /* LD ST, Vx */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+    ctx->sound_timer = ctx->registers[x];
 }
 
 static void op_Fx1E(struct chip8_context *ctx)

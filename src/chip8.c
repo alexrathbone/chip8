@@ -552,10 +552,20 @@ static void op_Fx33(struct chip8_context *ctx)
 
 static void op_Fx55(struct chip8_context *ctx)
 {
-    /* TODO */
+    /* LD [I], Vx */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+
+    for (uint8_t j = 0; j < x; ++j) {
+        ctx->mem[ctx->i + j] = ctx->registers[j];
+    }
 }
 
 static void op_Fx65(struct chip8_context *ctx)
 {
-    /* TODO */
+    /* LD Vx, [I] */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+
+    for (uint8_t j = 0; j < x; ++j) {
+        ctx->registers[j] = ctx->mem[ctx->i + j];
+    }
 }

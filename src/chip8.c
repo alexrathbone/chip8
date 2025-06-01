@@ -172,7 +172,7 @@ static void op_0nnn(struct chip8_context *ctx)
 static void op_00E0(struct chip8_context *ctx)
 {
     /* CLS */
-    memset(ctx->display, 0, DISPLAY_SIZE);
+    memset(ctx->display, 0, DISPLAY_SIZE * sizeof(uint32_t));
 }
 
 static void op_00EE(struct chip8_context *ctx)
@@ -454,12 +454,22 @@ static void op_E_decode(struct chip8_context *ctx)
 
 static void op_Ex9E(struct chip8_context *ctx)
 {
-    /* TODO input */
+    /* SKP Vx */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+
+    if (ctx->keys[ctx->registers[x]]) {
+        ctx->pc += 2;
+    }
 }
 
 static void op_ExA1(struct chip8_context *ctx)
 {
-    /* TODO input */
+    /* SKNP Vx */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+
+    if (!ctx->keys[ctx->registers[x]]) {
+        ctx->pc += 2;
+    }
 }
 
 static void op_F_decode(struct chip8_context *ctx)
@@ -516,7 +526,17 @@ static void op_Fx07(struct chip8_context *ctx)
 
 static void op_Fx0A(struct chip8_context *ctx)
 {
-    /* TODO input */
+    /* LD Vx, K */
+    uint8_t x = (ctx->opcode & 0x0F00u) >> 8u;
+
+    for (int i = 0; i < 0xF + 1; ++i) {
+        if (ctx->keys[i]) {
+            ctx->registers[x] = i;
+            return;
+        }
+    }
+
+    ctx->pc -= 2;
 }
 
 static void op_Fx15(struct chip8_context *ctx)

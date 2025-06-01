@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
     running = 1;
     while (running) {
-        if (sdl_update(&sdl_ctx)) {
+        if (sdl_update(&sdl_ctx, &cpu_ctx)) {
             running = 0;
         }
 

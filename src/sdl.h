@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
 
+struct chip8_context;
+
 struct sdl_context
 {
     SDL_Window *window;
@@ -14,7 +16,7 @@ struct sdl_context
 
 int sdl_init(struct sdl_context *ctx);
 void sdl_cleanup(struct sdl_context *ctx);
-int sdl_update(struct sdl_context *ctx);
+int sdl_update(struct sdl_context *ctx, struct chip8_context *cpu_ctx);
 void sdl_render(struct sdl_context *ctx, uint32_t *display);
 
 #endif

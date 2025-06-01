@@ -24,6 +24,8 @@ struct chip8_context {
 
     uint8_t delay_timer;
     uint8_t sound_timer;
+
+    uint8_t keys[0xF + 1];
 };
 
 int chip8_init(struct chip8_context *ctx);
